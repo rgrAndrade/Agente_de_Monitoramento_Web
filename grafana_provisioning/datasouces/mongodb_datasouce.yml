@@ -1,0 +1,14 @@
+apiVersion: 1
+
+datasources:
+  - name: MongoDB_Monitor # Nome que aparecerá no Grafana
+    type: yesoremaptime-mongodb-datasource # Tipo do plugin (instalado via GF_INSTALL_PLUGINS no docker-compose)
+    access: proxy # Acesso via proxy do Grafana
+    url: mongodb://db_monitor:27017 # URL de conexão com o contêiner MongoDB
+    database: monitor_db # Nome do banco de dados no MongoDB
+    user: "" # Usuário (deixe vazio se não houver autenticação)
+    password: "" # Senha (deixe vazio se não houver autenticação)
+    # Configurações adicionais podem ser adicionadas aqui, se necessário pelo plugin
+    # jsonData:
+    #   useReplicaSet: false
+    #   replicaSetName: "rs0"
