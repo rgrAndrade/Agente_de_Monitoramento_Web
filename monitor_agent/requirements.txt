@@ -1,0 +1,4 @@
+ping3        # Para testes de ping
+requests     # Para testes HTTP
+pymongo      # Driver Python para MongoDB
+APScheduler  # Para agendamento de tarefas em segundo plano
