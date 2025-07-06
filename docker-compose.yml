@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # Serviço do banco de dados MongoDB
+  db_monitor:
+    image: mongo:latest # Imagem oficial do MongoDB
+    restart: unless-stopped # Reinicia o contêiner automaticamente, a menos que seja parado manualmente
+    volumes:
+      - mongo_data:/data/db # Mapeia um volume persistente para os dados do MongoDB
+    ports:
+      - "27017:27017" # Expõe a porta padrão do MongoDB para acesso externo (opcional para este projeto, mas útil para depuração)
+
+  # Serviço do agente de monitoramento em Python
+  app_monitor:
+    build: ./monitor_agent # Constrói a imagem Docker a partir do Dockerfile no diretório monitor_agent
+    restart: unless-stopped
+    environment:
+      # Variável de ambiente para a URI de conexão com o MongoDB
+      MONGODB_URI: mongodb://db_monitor:27017/monitor_db
+    depends_on:
+      - db_monitor # Garante que o db_monitor seja iniciado antes do app_monitor
+
+  # Serviço do Grafana
+  grafana:
+    image: grafana/grafana:latest # Imagem oficial do Grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: admin # Usuário padrão para login no Grafana
+      GF_SECURITY_ADMIN_PASSWORD: admin_password # Senha padrão para login no Grafana (MUDAR EM PRODUÇÃO!)
+      GF_INSTALL_PLUGINS: yesoremaptime-mongodb-datasource # Instala o plugin do MongoDB para Grafana
+    volumes:
+      - grafana_data:/var/lib/grafana # Mapeia um volume persistente para os dados do Grafana
+      - ./grafana_provisioning:/etc/grafana/provisioning/datasources # Provisiona o datasource do MongoDB
+    ports:
+      - "3000:3000" # Expõe a porta padrão do Grafana
+    depends_on:
+      - db_monitor # Garante que o db_monitor seja iniciado antes do Grafana
+
+# Definição dos volumes persistentes
+volumes:
+  mongo_data:
+  grafana_data:
