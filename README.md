@@ -38,17 +38,6 @@ A arquitetura da solução é modular, desacoplada e baseada em microsserviços 
 4.  O contêiner `grafana` inicia e, através de um plugin específico para MongoDB, se conecta ao `db_monitor`.
 5.  Os dashboards configurados no Grafana consultam o MongoDB e exibem as métricas em tempo real, permitindo a análise do desempenho da rede e dos serviços web monitorados.
 
-**Diagrama da Arquitetura:**
-
-```mermaid
-graph TD
-    A[Agente de Monitoramento <br/> (Python App)] --> B[Banco de Dados <br/> (MongoDB)]
-    B --> C[Grafana]
-    style A fill:#e0f7fa,stroke:#00796b,stroke-width:2px,color:#333;
-    style B fill:#e8f5e9,stroke:#33691e,stroke-width:2px,color:#333;
-    style C fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#333;
-
-
 ## Instruções de Execução
 
 Siga os passos abaixo para levantar a solução em seu ambiente.
